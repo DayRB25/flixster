@@ -1,65 +1,91 @@
 var searchBtn = document.getElementById("submitbtn");
 var movieContainer = document.getElementById("moviecontainer");
 var loadBtn = document.getElementById("loadBtn");
+const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
+
+// array for movie data fetched from API
+let results;
+
+// index of current movie to be displayed in results array
+let currMovieIdx;
+
+///////////////
+// Provided a film's data, create the appropriate HTML structure with classnames (see comment in index.HTML for structure), and fill with
+// required data
+///////////////
+const addMovieElement = (movie) => {
+  const movieItemContainer = document.createElement("div");
+  movieItemContainer.className = "moviecontainer--movie";
+
+  const moviePoster = document.createElement("img");
+  moviePoster.className = "moviecontainer--movie_img";
+  moviePoster.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+
+  const movieInfoContainer = document.createElement("div");
+  movieInfoContainer.className = "moviecontainer--movie_info";
+
+  const movieRatingContainer = document.createElement("div");
+  movieRatingContainer.className = "moviecontainer--movie_info-rating";
+
+  const starImg = document.createElement("img");
+  starImg.className = "moviecontainer--movie_info-rating_star";
+  starImg.src = "25533-transformed.png";
+
+  const movieRatingValue = document.createElement("p");
+  movieRatingValue.innerText = `${movie.vote_average}`;
+
+  movieRatingContainer.appendChild(starImg);
+  movieRatingContainer.appendChild(movieRatingValue);
+
+  const movieTitle = document.createElement("p");
+  movieTitle.innerText = `${movie.title}`;
+
+  movieInfoContainer.appendChild(movieRatingContainer);
+  movieInfoContainer.appendChild(movieTitle);
+
+  movieItemContainer.appendChild(moviePoster);
+  movieItemContainer.appendChild(movieInfoContainer);
+
+  movieContainer.appendChild(movieItemContainer);
+};
 
 document.addEventListener("DOMContentLoaded", async (event) => {
   event.preventDefault();
 
   try {
-    const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
-
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`;
 
     const response = await fetch(url);
     const data = await response.json();
 
-    const results = data.results;
+    results = data.results;
 
     // POPULATING LANDING SCREEN WITH 6 FILMS
-    for (let i = 0; i < 6; i++) {
-      ///////////////
-      // For each film, access film's info (movie), create the appropriate HTML structure with classnames (see comment in index.HTML for structure), and fill with
-      // required data
-      ///////////////
-      const movie = results[i];
-
-      const movieItemContainer = document.createElement("div");
-      movieItemContainer.className = "moviecontainer--movie";
-
-      const moviePoster = document.createElement("img");
-      moviePoster.className = "moviecontainer--movie_img";
-      moviePoster.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
-
-      const movieInfoContainer = document.createElement("div");
-      movieInfoContainer.className = "moviecontainer--movie_info";
-
-      const movieRatingContainer = document.createElement("div");
-      movieRatingContainer.className = "moviecontainer--movie_info-rating";
-
-      const starImg = document.createElement("img");
-      starImg.className = "moviecontainer--movie_info-rating_star";
-      starImg.src = "25533-transformed.png";
-
-      const movieRatingValue = document.createElement("p");
-      movieRatingValue.innerText = `${movie.vote_average}`;
-
-      movieRatingContainer.appendChild(starImg);
-      movieRatingContainer.appendChild(movieRatingValue);
-
-      const movieTitle = document.createElement("p");
-      movieTitle.innerText = `${movie.title}`;
-
-      movieInfoContainer.appendChild(movieRatingContainer);
-      movieInfoContainer.appendChild(movieTitle);
-
-      movieItemContainer.appendChild(moviePoster);
-      movieItemContainer.appendChild(movieInfoContainer);
-
-      movieContainer.appendChild(movieItemContainer);
+    for (currMovieIdx = 0; currMovieIdx < 6; currMovieIdx++) {
+      let movie = results[currMovieIdx];
+      addMovieElement(movie);
     }
-
-    console.log(data);
   } catch (error) {
     console.log(error);
+  }
+});
+
+///////////////
+// Load new movies onto the DOM 6 at a time (if 6 or more movies left to be displayed). If less than 6 movies, add remaining and remove load button
+///////////////
+loadBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const numMovies = results.length;
+  const startIdx = currMovieIdx;
+
+  // add the minimum of 6 elements or how many are remaining to be displayed
+  for (let i = 0; i < Math.min(6, numMovies - startIdx); i++) {
+    let movie = results[currMovieIdx++];
+    addMovieElement(movie);
+  }
+
+  // current idx out of bounds of results array
+  if (currMovieIdx >= numMovies) {
+    loadBtn.remove();
   }
 });
