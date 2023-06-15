@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.moviecontainer {
+#moviecontainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
@@ -24,7 +24,7 @@
 
 
 .moviecontainer--movie_img {
-    width: 80%;
+    width: 300px;
 }
 
 .moviecontainer--movie_info-rating {
