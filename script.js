@@ -1,4 +1,5 @@
-var searchBtn = document.getElementById("submitbtn");
+var searchBtn = document.getElementById("searchBtn");
+var searchField = document.getElementById("searchField");
 var movieContainer = document.getElementById("moviecontainer");
 var loadBtn = document.getElementById("loadBtn");
 const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
@@ -87,5 +88,33 @@ loadBtn.addEventListener("click", (event) => {
   // current idx out of bounds of results array
   if (currMovieIdx >= numMovies) {
     loadBtn.remove();
+  }
+});
+
+///////////////
+// Clears original landing screen movies and replaces them with movies matching search term
+///////////////
+searchBtn.addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const searchMovie = searchField.value;
+  movieContainer.innerHTML = "";
+  try {
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
+      searchMovie
+    )}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    results = data.results;
+
+    // POPULATING SCREEN WITH 6 FILMS
+    for (currMovieIdx = 0; currMovieIdx < 6; currMovieIdx++) {
+      let movie = results[currMovieIdx];
+      addMovieElement(movie);
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
