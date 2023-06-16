@@ -1,7 +1,9 @@
+var form = document.getElementById("form");
 var searchBtn = document.getElementById("searchBtn");
 var searchField = document.getElementById("searchField");
 var movieContainer = document.getElementById("moviecontainer");
 var loadBtn = document.getElementById("loadBtn");
+
 const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
 
 // array for movie data fetched from API
@@ -48,6 +50,48 @@ const addMovieElement = (movie) => {
   movieItemContainer.appendChild(movieInfoContainer);
 
   movieContainer.appendChild(movieItemContainer);
+};
+
+const validateSearchInput = (searchTerm) => {
+  let termLength = searchTerm.length;
+  let valid = false;
+  for (let i = 0; i < termLength; i++) {
+    if (searchTerm.charCodeAt(i) != 10 && searchTerm.charCodeAt(i) != 32) {
+      valid = true;
+    }
+  }
+
+  return false;
+};
+
+const insertClearButton = () => {
+  const clearButton = document.createElement("button");
+  clearButton.innerText = "Clear";
+  clearButton.addEventListener("click", async (event) => {
+    event.preventDefault();
+    searchField.value = "";
+
+    // reload original data
+    movieContainer.innerHTML = "";
+    clearButton.remove();
+    try {
+      const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      results = data.results;
+
+      // POPULATING LANDING SCREEN WITH 6 FILMS
+      for (currMovieIdx = 0; currMovieIdx < 6; currMovieIdx++) {
+        let movie = results[currMovieIdx];
+        addMovieElement(movie);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  form.appendChild(clearButton);
 };
 
 document.addEventListener("DOMContentLoaded", async (event) => {
@@ -98,6 +142,7 @@ searchBtn.addEventListener("click", async (event) => {
   event.preventDefault();
 
   const searchMovie = searchField.value;
+  insertClearButton();
   movieContainer.innerHTML = "";
   try {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
