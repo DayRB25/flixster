@@ -77,7 +77,7 @@ const validateSearchInput = (searchTerm) => {
     }
   }
 
-  return false;
+  return valid;
 };
 
 const insertClearButton = () => {
@@ -158,8 +158,16 @@ loadBtn.addEventListener("click", (event) => {
 ///////////////
 searchBtn.addEventListener("click", async (event) => {
   event.preventDefault();
-
   const searchMovie = searchField.value;
+
+  // if search term invalid (no characters other than null or spaces) alert user and do nothing
+  if (!validateSearchInput(searchMovie)) {
+    alert(
+      "Please ensure search term contains at least one non-space character"
+    );
+    return;
+  }
+
   insertClearButton();
   appContainer.appendChild(loadBtn);
   movieContainer.innerHTML = "";
