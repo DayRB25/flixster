@@ -87,9 +87,9 @@ h3 {
 #moviecontainer {
     margin-top: 12px;
     display: grid;
-    grid-template-columns: 300px 300px 300px;
+    grid-template-columns: 250px 250px 250px;
     grid-auto-rows: 470px;
-    grid-gap: 10px;
+    grid-gap: 20px;
     color: #f5f5f5;
 }
 

@@ -4,6 +4,7 @@ var searchField = document.getElementById("searchField");
 var movieContainer = document.getElementById("moviecontainer");
 var appContainer = document.getElementById("container");
 var loadBtn = document.getElementById("loadBtn");
+var movieContainerTitle = document.getElementById("moviecontainertitle");
 
 const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
 
@@ -24,7 +25,11 @@ const addMovieElement = (movie) => {
   const moviePoster = document.createElement("img");
   moviePoster.className = "moviecontainer--movie_img";
   moviePoster.alt = `${movie.title} cover`;
-  moviePoster.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+  if (movie.poster_path == null) {
+    moviePoster.src = "nullimg.png";
+  } else {
+    moviePoster.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+  }
 
   const movieInfoContainer = document.createElement("div");
   movieInfoContainer.className = "moviecontainer--movie_info";
@@ -79,6 +84,7 @@ const insertClearButton = () => {
     appContainer.appendChild(loadBtn);
     // reload original data
     movieContainer.innerHTML = "";
+    movieContainerTitle.innerText = "Now Playing:";
     clearButton.remove();
     try {
       const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`;
@@ -151,6 +157,7 @@ searchBtn.addEventListener("click", async (event) => {
   insertClearButton();
   appContainer.appendChild(loadBtn);
   movieContainer.innerHTML = "";
+  movieContainerTitle.innerText = `Movies matching "${searchMovie}"`;
   try {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
       searchMovie
