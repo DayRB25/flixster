@@ -9,10 +9,45 @@
     align-items: center;
 }
 
+header {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#form {
+    margin-top: 15px;
+    display: flex;
+
+}
+
+#searchField {
+    width: 200px;
+    height: 30px;
+    font-size: 20px;
+
+}
+
+#searchBtn {
+    height: 30px;
+}
+
+
+.nowplayingcontainer {
+    margin-top: 30px;
+}
+
+h3 {
+    font-size: 25px;
+}
+
 #moviecontainer {
+    margin-top: 12px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* grid-gap: 10px; */
+    grid-template-columns: 300px 300px 300px;
+    grid-auto-rows: 450px;
+    grid-gap: 10px;
 }
 
 .moviecontainer--movie {
@@ -24,14 +59,43 @@
 
 
 .moviecontainer--movie_img {
-    width: 300px;
+    width: 250px;
 }
 
 .moviecontainer--movie_info-rating {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
 }
 
 .moviecontainer--movie_info-rating_star {
     width: 30px;
+}
+
+.moviecontainer--movie_info-rating_value {
+    font-size: 20px;
+}
+
+.moviecontainer--movie_info-title {
+    font-size: 20px;
+}
+
+#loadBtn {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100px;
+    height: 30px;
+}
+
+@media screen and (max-width: 930px) {
+    #moviecontainer {
+        grid-template-columns: 300px 300px;
+    }
+    
+}
+
+@media screen and (max-width: 610px) {
+    #moviecontainer {
+        grid-template-columns: 300px;
+    }
+    
 }

@@ -22,6 +22,7 @@ const addMovieElement = (movie) => {
 
   const moviePoster = document.createElement("img");
   moviePoster.className = "moviecontainer--movie_img";
+  moviePoster.alt = `${movie.title} cover`;
   moviePoster.src = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
 
   const movieInfoContainer = document.createElement("div");
@@ -32,15 +33,18 @@ const addMovieElement = (movie) => {
 
   const starImg = document.createElement("img");
   starImg.className = "moviecontainer--movie_info-rating_star";
+  starImg.alt = "star";
   starImg.src = "25533-transformed.png";
 
   const movieRatingValue = document.createElement("p");
+  movieRatingValue.className = "moviecontainer--movie_info-rating_value";
   movieRatingValue.innerText = `${movie.vote_average}`;
 
   movieRatingContainer.appendChild(starImg);
   movieRatingContainer.appendChild(movieRatingValue);
 
   const movieTitle = document.createElement("p");
+  movieTitle.className = "moviecontainer--movie_info-title";
   movieTitle.innerText = `${movie.title}`;
 
   movieInfoContainer.appendChild(movieRatingContainer);
