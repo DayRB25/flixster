@@ -51,7 +51,13 @@ const addMovieElement = (movie) => {
 
   const movieTitle = document.createElement("p");
   movieTitle.className = "moviecontainer--movie_info-title";
-  movieTitle.innerText = `${movie.title}`;
+  if (movie.title.length > 35) {
+    let shortTitle = movie.title.slice(0, 35);
+    shortTitle += "...";
+    movieTitle.innerText = `${shortTitle}`;
+  } else {
+    movieTitle.innerText = `${movie.title}`;
+  }
 
   movieInfoContainer.appendChild(movieRatingContainer);
   movieInfoContainer.appendChild(movieTitle);
