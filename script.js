@@ -2,6 +2,7 @@ var form = document.getElementById("form");
 var searchBtn = document.getElementById("searchBtn");
 var searchField = document.getElementById("searchField");
 var movieContainer = document.getElementById("moviecontainer");
+var appContainer = document.getElementById("container");
 var loadBtn = document.getElementById("loadBtn");
 
 const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
@@ -75,7 +76,7 @@ const insertClearButton = () => {
   clearButton.addEventListener("click", async (event) => {
     event.preventDefault();
     searchField.value = "";
-
+    appContainer.appendChild(loadBtn);
     // reload original data
     movieContainer.innerHTML = "";
     clearButton.remove();
@@ -148,6 +149,7 @@ searchBtn.addEventListener("click", async (event) => {
 
   const searchMovie = searchField.value;
   insertClearButton();
+  appContainer.appendChild(loadBtn);
   movieContainer.innerHTML = "";
   try {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
