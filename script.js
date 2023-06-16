@@ -71,6 +71,7 @@ const validateSearchInput = (searchTerm) => {
 const insertClearButton = () => {
   const clearButton = document.createElement("button");
   clearButton.innerText = "Clear";
+  clearButton.id = "clearBtn";
   clearButton.addEventListener("click", async (event) => {
     event.preventDefault();
     searchField.value = "";
