@@ -5,6 +5,9 @@ var movieContainer = document.getElementById("moviecontainer");
 var appContainer = document.getElementById("container");
 var loadBtn = document.getElementById("loadBtn");
 var movieContainerTitle = document.getElementById("moviecontainertitle");
+var modalClose = document.getElementById("modal-close");
+var modalContainer = document.getElementById("modalcontent");
+var modal = document.getElementById("modal");
 
 const apiKey = "0d02fe98abd1fa29b643a231a9ac3b49";
 
@@ -65,6 +68,21 @@ const addMovieElement = (movie) => {
   movieItemContainer.appendChild(moviePoster);
   movieItemContainer.appendChild(movieInfoContainer);
 
+  movieItemContainer.addEventListener("click", async (event) => {
+    event.preventDefault();
+    // fill in modal content with appropriate info
+    try {
+      const url = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      fillModalContent(data);
+    } catch (error) {
+      console.log(error);
+    }
+    modal.style.display = "block";
+  });
+
   movieContainer.appendChild(movieItemContainer);
 };
 
@@ -110,6 +128,73 @@ const insertClearButton = () => {
     }
   });
   form.appendChild(clearButton);
+};
+
+///////////////
+// Generate and fill pop-up with information from movie, see index.html comment within "modal" div for html skeleton
+///////////////
+const fillModalContent = (movie) => {
+  modalContainer.innerHTML = "";
+
+  const backButton = document.createElement("span");
+  backButton.innerText = "BACK";
+  backButton.className = "modalclose";
+  backButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    modal.style.display = "none";
+  });
+
+  const movieTitle = document.createElement("h3");
+  movieTitle.innerText = `${movie.original_title}`;
+
+  const movieDetailsContainer = document.createElement("div");
+  movieDetailsContainer.className = "moviedetails";
+
+  const movieCalendarContainer = document.createElement("div");
+  movieCalendarContainer.className = "release";
+
+  const calendarImg = document.createElement("img");
+  calendarImg.className = "calendar";
+  calendarImg.src = "calendar.png";
+  calendarImg.alt = "calendar";
+
+  const movieReleaseDate = document.createElement("h4");
+  movieReleaseDate.innerText = `${movie.release_date}`;
+
+  movieCalendarContainer.appendChild(calendarImg);
+  movieCalendarContainer.appendChild(movieReleaseDate);
+
+  const movieLengthContainer = document.createElement("div");
+  movieLengthContainer.className = "duration";
+
+  const timerImg = document.createElement("img");
+  timerImg.classList = "timer";
+  timerImg.src = "timer.png";
+  timerImg.alt = "timer";
+
+  const movieLength = document.createElement("h4");
+  movieLength.innerText = `${movie.runtime}`;
+
+  movieLengthContainer.appendChild(timerImg);
+  movieLengthContainer.appendChild(movieLength);
+
+  movieDetailsContainer.appendChild(movieCalendarContainer);
+  movieDetailsContainer.appendChild(movieLengthContainer);
+
+  const movieDescription = document.createElement("p");
+  movieDescription.innerText = `${movie.overview}`;
+  movieDescription.className = "moviedescription";
+
+  const playButton = document.createElement("button");
+  playButton.type = "submit";
+  playButton.innerText = "Play";
+  playButton.className = "playBtn";
+
+  modalContainer.appendChild(backButton);
+  modalContainer.appendChild(movieTitle);
+  modalContainer.appendChild(movieDetailsContainer);
+  modalContainer.appendChild(movieDescription);
+  modalContainer.appendChild(playButton);
 };
 
 document.addEventListener("DOMContentLoaded", async (event) => {
@@ -191,3 +276,7 @@ searchBtn.addEventListener("click", async (event) => {
     console.log(error);
   }
 });
+
+// modalClose.addEventListener("click", function () {
+//   modal.style.display = "none";
+// });
