@@ -86,6 +86,10 @@ const addMovieElement = (movie) => {
   movieContainer.appendChild(movieItemContainer);
 };
 
+///////////////
+// Validates that search term contains at least one non-space or non-null character
+//
+///////////////
 const validateSearchInput = (searchTerm) => {
   let termLength = searchTerm.length;
   let valid = false;
@@ -98,6 +102,10 @@ const validateSearchInput = (searchTerm) => {
   return valid;
 };
 
+///////////////
+// Inserts a button to clear contents of search field, called when a valid search is made
+//
+///////////////
 const insertClearButton = () => {
   const clearButton = document.createElement("button");
   clearButton.innerText = "Clear";
@@ -132,6 +140,7 @@ const insertClearButton = () => {
 
 ///////////////
 // Generate and fill pop-up with information from movie, see index.html comment within "modal" div for html skeleton
+//
 ///////////////
 const fillModalContent = (movie) => {
   modalContainer.innerHTML = "";
@@ -197,6 +206,9 @@ const fillModalContent = (movie) => {
   modalContainer.appendChild(playButton);
 };
 
+///////////////
+// Loads list of current movies being played from API, called when DOM is completely loaded
+///////////////
 document.addEventListener("DOMContentLoaded", async (event) => {
   event.preventDefault();
 
@@ -276,7 +288,3 @@ searchBtn.addEventListener("click", async (event) => {
     console.log(error);
   }
 });
-
-// modalClose.addEventListener("click", function () {
-//   modal.style.display = "none";
-// });
