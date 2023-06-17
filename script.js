@@ -182,7 +182,7 @@ const fillModalContent = (movie) => {
   timerImg.alt = "timer";
 
   const movieLength = document.createElement("h4");
-  movieLength.innerText = `${movie.runtime}`;
+  movieLength.innerText = `${movie.runtime} minutes`;
 
   movieLengthContainer.appendChild(timerImg);
   movieLengthContainer.appendChild(movieLength);
